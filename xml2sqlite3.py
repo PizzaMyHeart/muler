@@ -55,6 +55,7 @@ def parse_moa():
 
     Returns a 2-D list of drug entries.
     '''
+    print('Parsing...')
     n = 0
     # We only want immediate child elements of each entry (depth == 1)
     depth = 0
@@ -64,7 +65,7 @@ def parse_moa():
     drugs = []
     index = ''
     for event, elem in tree:
-        if n == 15000:
+        if n == 50000:
             pass
         matched  = ''        
         if event == 'start':
@@ -77,44 +78,44 @@ def parse_moa():
                 # Get drugbank-id tags with attribute 'primary'
                 if (elem.tag == '{http://www.drugbank.ca}drugbank-id' and
                       elem.items() == [('primary', 'true')]):
-                    print('Drugbank id:', elem.text, '\n')
+                    #print('Drugbank id:', elem.text, '\n')
                     matched = elem.text
                     # Use this as index to track progress through tree
                     index = elem.text
                 elif elem.tag == '{http://www.drugbank.ca}name':
-                    print('Drug name:', elem.text, '\n')
+                    #print('Drug name:', elem.text, '\n')
                     matched = elem.text
                 elif elem.tag == '{http://www.drugbank.ca}pharmacodynamics':
-                    print('Pharmacodynamics:', elem.text, '\n')
+                    #print('Pharmacodynamics:', elem.text, '\n')
                     matched = elem.text
                 elif elem.tag == '{http://www.drugbank.ca}mechanism-of-action':
-                    print('Mechanism of action:', elem.text)
+                    #print('Mechanism of action:', elem.text)
                     matched = elem.text
                 elif elem.tag == '{http://www.drugbank.ca}indication':
-                    print('Indication:', elem.text, '\n---\n')
+                    #print('Indication:', elem.text, '\n---\n')
                     matched = elem.text
                 elif elem.tag == '{http://www.drugbank.ca}atc-codes':
                     if elem:
-                        print('Drug class:', elem[0][0].text)
+                        #print('Drug class:', elem[0][0].text)
                         matched = elem[0][0].text
                     else:
                         matched = 'NA'
                 elif elem.tag == '{http://www.drugbank.ca}synonyms':
                     if elem:
                         matched = [child.text for child in elem] 
-                        print('Synonyms:', matched)
+                        #print('Synonyms:', matched)
                     else:
                         matched = 'NA'
                 elif elem.tag == '{http://www.drugbank.ca}products':
                     if elem:
                         matched = [child[0].text for child in elem]
-                        print('Products:', matched)
+                        #print('Products:', matched)
                     else:
                         matched = 'NA'
                 if matched == None:
                     matched = 'NA'
                 if matched:    
-                    print('Item matched:', matched, '\n')
+                    #print('Item matched:', matched, '\n')
                     # If new index, append current list to drugbank and reset
                     if index not in drugs and drugs:
                         drugbank.append(drugs)
@@ -123,10 +124,12 @@ def parse_moa():
         # Clear current element from memory before moving on to next
         root.clear()
         n += 1
+    print('Parsing complete.')
     return drugbank
 
 
 parsed = parse_moa()
+
 
 def sort_parsed(parsed):
     '''
@@ -150,12 +153,18 @@ def sort_parsed(parsed):
         name_rows.append([drug[0], drug[1]])
         synonym_rows.append([drug[0], drug[-3]])
         # Unique product values only
-        product_rows.append([drug[0], list(set(drug[-2]))])
-        print(drug, '\n------')
-    print('pharm_rows:', len(pharm_rows), 'rows')
-    print('name_rows:', len(name_rows), 'rows')
-    print('synonym_rows:', len(synonym_rows), 'rows')
-    print('product_rows:', len(product_rows), 'rows')
+        product = drug[-2]
+        if type(product) == list:
+            product = list(set(product))
+        product_rows.append([drug[0], product])
+        #print(drug, '\n------')
+        #print(product_rows)
+        #print('\n')
+    #print('pharm_rows:', len(pharm_rows), 'rows')
+    #print('name_rows:', len(name_rows), 'rows')
+    #print('synonym_rows:', len(synonym_rows), 'rows')
+    #print('product_rows:', len(product_rows), 'rows')
+    print('product:', product_rows[-1])
     return pharm_rows, name_rows, synonym_rows, product_rows
 
 pharm_rows, name_rows, synonym_rows, product_rows = sort_parsed(parsed)
@@ -171,9 +180,10 @@ def split_lists(rows):
     '''
     split = []
     for row in rows:
-        print(row)
+        # row[1] must be a list
+        if type(row[1]) != list:
+            row[1] = [row[1]]
         for item in row[1]:
-            print(item)
             split.append([row[0], item])
     return split
     
@@ -189,7 +199,7 @@ def insert_sql(rows, table):
         cur.execute(f'INSERT INTO {table} VALUES ({tokens})', row)
     
 
-#print('No. of rows:', len(rows))
+
 
 # Split product_rows and synonym_rows
 synonym_rows = split_lists(synonym_rows)
