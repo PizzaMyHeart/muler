@@ -97,6 +97,8 @@ def search(patterns_values):
             # items() returns tuples of key-value pairs
             if search in [i.lower() for i in item[1]]:
                 table = item[0]
+                # Stop iterating if found earlier e.g. in 'Name'
+                break
       
 
         
