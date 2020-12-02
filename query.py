@@ -23,10 +23,23 @@ for sublist in patterns.values():
 
 patterns_values = [i.lower() for i in patterns_values]
 
-          
-def search(patterns_values):
+
+def userinput():
+    '''
+    Get user input
+    '''
+    if __name__ == '__main__':
+        userinput = input('Search:').lower()
+    return userinput
+
+
+def get_search(search, patterns_values):
     '''
     Takes user input and matches it against rows in name column
+
+    Args
+        search - user input
+        patterns_values - flat list of names, synonyms and products
 
     Returns
         search - matched name in table
@@ -34,7 +47,7 @@ def search(patterns_values):
     '''
     table = ''
     while True:
-        search = input('Search:').lower()
+        #search = input('Search:').lower()
         if search == 'quit':
             break
         if search == '':
@@ -72,10 +85,11 @@ def search(patterns_values):
 
         
         print('Matched:', search)
+        print('Table:', table)
         return search, table
-    
-querystring, table = search(patterns_values)
-print('Table:', table)
+
+
+querystring, table = get_search(userinput(), patterns_values)
 
 def query(querystring, table):
     '''
@@ -109,6 +123,7 @@ def query(querystring, table):
               .filter(Pharm.drugbank_id == i[0]).all()[0][0])
         mech = (session.query(Pharm.mech)
                 .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+        # Synonyms and products are lists
         synonyms = (session.query(Synonym.synonym)
                     .filter(Synonym.drugbank_id == i[0]).all())
         products = (session.query(Product.product)
@@ -126,7 +141,7 @@ def query(querystring, table):
         for product in products:
             #print(product[0], end = ', ')
             pass
-
+    return drugbank_id, name, d_class, ind, pd, mech, synonyms, products
 query(querystring, table)
     
 
