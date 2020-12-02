@@ -1,46 +1,15 @@
 #!/usr/bin/python3
 
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import sessionmaker, Session, relationship
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from fuzzywuzzy import fuzz
+from models import Pharm, Name, Synonym, Product
 
 engine = create_engine('sqlite:///muler.db', echo=False)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-Base = declarative_base(engine)
-
-class Pharm(Base):
-    __tablename__ = 'pharm'
-
-    drugbank_id = Column(String, primary_key=True)
-    pd = Column(String)
-    mech = Column(String)
-    ind = Column(String)
-    d_class = Column(String)
-
-class Name(Base):
-    __tablename__ = 'name'
-
-    drugbank_id = Column(String, primary_key=True)
-    name = Column(String)
-
-class Synonym(Base):
-    __tablename__ = 'synonym'
-
-    drugbank_id = Column(String, ForeignKey(Name.drugbank_id), primary_key=True)
-    synonym = Column(String)
-    name = relationship('Name', backref = 'synonym')
-
-class Product(Base):
-    __tablename__ = 'product'
-
-    drugbank_id = Column(String, ForeignKey(Name.drugbank_id), primary_key=True)
-    product = Column(String)
-    name = relationship('Name', backref = 'product')
-    
+   
 patterns = ({'Name': [row.name for row in session.query(Name.name)],
              'Synonym': [row.synonym for row in session.query(Synonym.synonym)],
              'Product': [row.product for row in session.query(Product.product)]})
@@ -105,34 +74,48 @@ def search(patterns_values):
         print('Matched:', search)
         return search, table
     
-query, table = search(patterns_values)
+querystring, table = search(patterns_values)
 print('Table:', table)
 
-def match(query, table):
+def query(querystring, table):
     '''
     
     '''
     result = ''
     drugbank_id = ''
-    if query:
+    if querystring:
         if table == 'Name':
-            drugbank_id = session.query(Name.drugbank_id).filter(Name.name.ilike(query)).all()
+            drugbank_id = (session.query(Name.drugbank_id)
+                           .filter(Name.name.ilike(querystring))
+                           .all())
         elif table == 'Synonym':
-            drugbank_id = session.query(Synonym.drugbank_id).filter(Synonym.synonym.ilike(query)).all()
+            drugbank_id = (session.query(Synonym.drugbank_id)
+                           .filter(Synonym.synonym.ilike(querystring))
+                           .all())
         elif table == 'Product':
-            drugbank_id = session.query(Product.drugbank_id).filter(Product.product.ilike(query)).all()
+            drugbank_id = (session.query(Product.drugbank_id)
+                           .filter(Product.product.ilike(querystring))
+                           .all())
     # If product contains multiple ingredients:
-
     for i in drugbank_id:
         print('---\ndrugbank_id:', i[0])
-        name = session.query(Name.name).filter(Name.drugbank_id == i[0]).all()[0][0]
-        d_class = session.query(Pharm.d_class).filter(Pharm.drugbank_id == i[0]).all()[0][0]
-        pd = session.query(Pharm.pd).filter(Pharm.drugbank_id == i[0]).all()[0][0]
-        mech = session.query(Pharm.mech).filter(Pharm.drugbank_id == i[0]).all()[0][0]
-        synonyms = session.query(Synonym.synonym).filter(Synonym.drugbank_id == i[0]).all()
-        products = session.query(Product.product).filter(Product.drugbank_id == i[0]).all()
+        name = (session.query(Name.name)
+                .filter(Name.drugbank_id == i[0]).all()[0][0])
+        d_class = (session.query(Pharm.d_class)
+                   .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+        ind = (session.query(Pharm.ind)
+               .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+        pd = (session.query(Pharm.pd)
+              .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+        mech = (session.query(Pharm.mech)
+                .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+        synonyms = (session.query(Synonym.synonym)
+                    .filter(Synonym.drugbank_id == i[0]).all())
+        products = (session.query(Product.product)
+                    .filter(Product.drugbank_id == i[0]).all())
         print('Name:', name, '\n')
         print('Class:', d_class, '\n')
+        print('Indication:', ind, '\n')
         print('Pharmacodynamics:', pd, '\n')
         print('Mechanism of action:', mech, '\n')
         print('Synonyms:')
@@ -144,7 +127,7 @@ def match(query, table):
             #print(product[0], end = ', ')
             pass
 
-match(query, table)
+query(querystring, table)
     
 
 
