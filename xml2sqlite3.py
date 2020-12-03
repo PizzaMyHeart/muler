@@ -108,7 +108,9 @@ def parse_moa():
                         matched = 'NA'
                 elif elem.tag == '{http://www.drugbank.ca}products':
                     if elem:
-                        matched = [child[0].text for child in elem]
+                        # Add only if still marketed
+                        matched = [child[0].text for child in elem
+                                   if child[8].text == None]
                         #print('Products:', matched)
                     else:
                         matched = 'NA'
@@ -164,7 +166,7 @@ def sort_parsed(parsed):
     #print('name_rows:', len(name_rows), 'rows')
     #print('synonym_rows:', len(synonym_rows), 'rows')
     #print('product_rows:', len(product_rows), 'rows')
-    print('product:', product_rows[-1])
+    #print('product:', product_rows[-1])
     return pharm_rows, name_rows, synonym_rows, product_rows
 
 pharm_rows, name_rows, synonym_rows, product_rows = sort_parsed(parsed)
