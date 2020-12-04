@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fuzzywuzzy import fuzz
 from models import Pharm, Name, Synonym, Product
+from regex import drop_tags
 
 engine = create_engine('sqlite:///muler.db', echo=False)
 Session = sessionmaker(bind=engine)
@@ -95,7 +96,7 @@ def query(querystring, table):
     '''
     
     '''
-    result = ''
+    
     drugbank_id = ''
     if querystring:
         if table == 'Name':
@@ -110,6 +111,7 @@ def query(querystring, table):
             drugbank_id = (session.query(Product.drugbank_id)
                            .filter(Product.product.ilike(querystring))
                            .all())
+   
     # If product contains multiple ingredients:
     for i in drugbank_id:
         print('---\ndrugbank_id:', i[0])
@@ -130,23 +132,19 @@ def query(querystring, table):
                     .filter(Product.drugbank_id == i[0]).all())
         print('Name:', name, '\n')
         print('Class:', d_class, '\n')
-        print('Indication:', ind, '\n')
-        print('Pharmacodynamics:', pd, '\n')
-        print('Mechanism of action:', mech, '\n')
+        print('Indication:', drop_tags(ind), '\n')
+        print('Pharmacodynamics:', drop_tags(pd), '\n')
+        print('Mechanism of action:', drop_tags(mech), '\n')
         print('Synonyms:')
         for synonym in synonyms:
             if synonym[0] != name:
-                print(synonym[0], end = ', ')
+                print(synonym[0], end = ' | ')
         print('\nFound in:')
         for product in products:
             #print(product[0], end = ', ')
             pass
     return drugbank_id, name, d_class, ind, pd, mech, synonyms, products
-query(querystring, table)
-    
 
-
-
-
+results = query(querystring, table)
 
 
