@@ -4,16 +4,19 @@ TODO
 - XML parser [DONE]
 - Write to db [DONE]
 - Search db
-  - Levenshtein distance (spellfix/editdist3)
+  - Levenshtein distance (spellfix/editdist3) [DONE]
   - Autocomplete.js
-- Regex sanitiser
+- Regex sanitiser [DONE]
 - Flask app
   - Dropdown/expanding widgets for each type of info
 - Hosting
-- Synonyms e.g. aspirin = acetylsalicylic acid, paracetamol = acetaminophen
-- Indication
-- Drug class (<atc-codes>)
-- Brand names (<products>)
+- Synonyms e.g. aspirin = acetylsalicylic acid, paracetamol = acetaminophen [DONE]
+- Indication [DONE]
+- Drug class (<atc-codes>) [DONE]
+- Brand names (<products>) [DONE]
+- Update rofecoxib and mephenytoin mechanism of action
+
+
 
 Requirements
 - fuzzywuzzy-0.18.0
