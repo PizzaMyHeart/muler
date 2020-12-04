@@ -94,6 +94,7 @@ def parse_moa():
                 elif elem.tag == '{http://www.drugbank.ca}indication':
                     #print('Indication:', elem.text, '\n---\n')
                     matched = elem.text
+                # Drug class
                 elif elem.tag == '{http://www.drugbank.ca}atc-codes':
                     if elem:
                         #print('Drug class:', elem[0][0].text)
@@ -213,3 +214,4 @@ insert_sql(synonym_rows, 'synonym')
 insert_sql(product_rows, 'product')
 
 conn.commit()
+conn.close()
