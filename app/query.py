@@ -75,13 +75,15 @@ def get_results(search, patterns_values, patterns, session):
                 for value in patterns_values:
                     similarity = fuzz.token_sort_ratio(value.lower(), search.lower())
                     #print(pattern.lower(), search.lower(), similarity)
-                    similarities.update({value.lower(): similarity})
+                    similarities.update({value: similarity})
                 search =  max(similarities, key = similarities.get)
                 max_value = max(similarities.values())
                 print('Similarity:', max_value)
                 # Provide 5 most similar patterns
                 suggestions = sorted(similarities,
                                      key = similarities.get, reverse = True)[:5]
+                # Capitalise similar product names
+                suggestions = [i.capitalize() for i in suggestions]
                 print('Did you mean:', search, '?')
                 print('Other suggestions:', suggestions)
 
