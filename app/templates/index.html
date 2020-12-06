@@ -1,0 +1,25 @@
+<!doctype html>
+{% extends 'base.html' %}
+
+{% block content %}
+<form method='post'>
+  <label for='search'>Search:</label></br>
+  <input type='text' name='search'>
+</form>
+
+<div>
+  {% if results %}
+  <p>{{ drugbank_id }}</p>
+  <p>{{ name }}<p>
+  <p>{{ d_class }}<p>
+  <p>Indication:</p><br>
+  <p>{{ ind }}</p>
+  <p>Pharmacodynamics:</P><br>
+  <p>{{ pd | safe }}</P>
+  <p>Mechanism of action:</p><br>
+  <p>{{ mech | safe}}</P>
+  <p>{{ synonyms }}</P>
+  <p>Found in the following products: {{ products }}</P>
+  {% endif %}
+</div>
+{% endblock %}

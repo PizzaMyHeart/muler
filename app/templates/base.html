@@ -1,0 +1,15 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8"/>
+</head>
+<title>{% block title %}{% endblock %} Muler</title>
+
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
