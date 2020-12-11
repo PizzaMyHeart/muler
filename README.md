@@ -6,7 +6,9 @@ TODO
 - Search db
   - Levenshtein distance (spellfix/editdist3) [DONE]
   - Autocomplete.js
-- Regex sanitiser [DONE]
+- Regex sanitiser
+  - Drop brackets [DONE]
+  - Strip trailing whitespace
 - Flask app
   - Dropdown/expanding widgets for each type of info
 - Hosting
@@ -14,7 +16,8 @@ TODO
 - Indication [DONE]
 - Drug class (<atc-codes>) [DONE]
 - Brand names (<products>) [DONE]
-- Update rofecoxib and mephenytoin mechanism of action
+- Update rofecoxib and mephenytoin mechanism of action [DONE]
+- Approved/withdrawn/investigational (Groups)
 
 
 

@@ -1,0 +1,30 @@
+<!doctype html>
+{% extends 'base.html' %}
+{% block searchbar %}{{ super() }}{% endblock %}
+
+
+{% block content %}
+  {% if results %}
+    {% if suggestions %}
+      <p>Did you mean: </p>
+        {% for i in suggestions %}
+          <a href='/{{ i }}'>{{ i }}</a>
+        {% endfor %}
+    {% endif %}
+
+    <h1 class="drugname">{{ name }}</h1>
+    <p>{{ d_class }}<p>
+    <h2>Indication</h2>
+    <p>{{ ind | safe }}</p>
+    <h2>Pharmacodynamics</h2>
+    <p>{{ pd | safe }}</P>
+    <h2>Mechanism of action</h2>
+    <p>{{ mech | safe}}</P>
+    <h2>Synonyms</h2>
+    <p>{{ synonyms }}</P>
+    <h2>Found in the following products: </h2>{{ products }}
+    <p>{{ drugbank_id }}</p>
+  {% endif %}
+{% endblock %}
+
+

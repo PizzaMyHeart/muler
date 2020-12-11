@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drugbank xmlns="http://www.drugbank.ca" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.drugbank.ca http://www.drugbank.ca/docs/drugbank.xsd" version="5.1" exported-on="2020-07-02">
+<drug type ="biotech">
+  <name>Cetuximab</name>
+  <indication>blah blah blah</indication> 
+  <mechanism-of-action>does this</mechanism-of-action>
+  <pharmacodynamics>receptors bound</pharmacodynamics>
+</drug>
+<drug type ="biotech">
+  <name>Amitriptyline</name>
+  <indication>glug glug glug</indication> 
+  <mechanism-of-action>does that</mechanism-of-action>
+  <pharmacodynamics>other receptors bound</pharmacodynamics>
+</drug>
+</drugbank>

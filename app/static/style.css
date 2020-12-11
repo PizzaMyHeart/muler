@@ -1,0 +1,93 @@
+body {
+	font-family: "Verdana";
+}
+
+p {
+	font-size: 1em;
+}
+
+nav ul {
+	display: flex;
+	flex-direction: row;
+	padding: 0
+}
+
+nav ul li {
+	margin: 0 5px;
+	list-style: none;
+}
+
+/* Push flex item to right */
+.push {
+	margin-left: auto
+}
+
+#searchbar {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	height: 50%;
+	width: 100%;
+}
+
+#searchbar > input {
+	background-color: white;
+}
+
+
+#searchfield {
+	flex-basis: 100%;
+	font-size: 20px;
+	font-family: "Arial";
+	padding: 0.3em;
+	border-style: solid none solid solid;
+	border-radius: 60px 0 0 60px;
+	margin-left: 1em;
+}
+
+#searchbtn {
+	font-size: 2em;
+	padding: 0.3em;
+	border-style: solid solid solid none;
+	border-radius: 0 60px 60px 0;
+	margin-right: 1em;
+}
+
+#searchbtn:hover{
+	background-color: #dedede;
+}
+
+.drugname {
+	font-size: 2em;
+}
+
+.container {
+	padding: 1.5em 1.5em 0 1.5em;
+}
+
+.cards {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 2em
+}
+
+.card {
+	width: 20em;
+	box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.2);
+	margin: 2em auto 0 auto;
+}
+
+.center {
+	text-align: center
+}
+
+.icon {
+	font-size: 6em;
+}
+
+@media only screen and (min-width: 768px) {
+	#searchfield {flex-basis: 50%}
+	#searchfield {padding: 1em}
+	#searchbtn {padding: 1em}
+	.cards {flex-direction: row}
+}
