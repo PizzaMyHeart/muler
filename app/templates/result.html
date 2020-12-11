@@ -15,17 +15,22 @@
 
     <h1 class="drugname">{{ name }} 💊</h1>
     <p>{{ d_class }}<p>
-    <h2><mark>Indication</mark></h2>
+    <h2 class="label"><mark>Indication</mark></h2>
     <p>{{ ind | safe }}</p>
-    <h2><mark>Pharmacodynamics</mark></h2>
+    <h2 class="label"><mark>Pharmacodynamics</mark></h2>
     <p>{{ pd | safe }}</P>
-    <h2><mark>Mechanism of action</mark></h2>
+    <h2 class="label"><mark>Mechanism of action</mark></h2>
     <p>{{ mech | safe}}</P>
-    <h4>Synonyms</h4>
-    <p>{{ synonyms }}</P>
-    <h4>Found in the following products: </h4>{{ products }}
-    <p><a href="https://go.drugbank.com/drugs/{{ drugbank_id[0][0] }}">→ DrugBank</a></p>
+    <button class="accordion">Synonyms</button>
+    <div class="panel">{{ synonyms }}</div>
+    <button class="accordion">Products</button>
+    <div class="panel">{{ products }}</div>
+    <p><a href="https://go.drugbank.com/drugs/{{ drugbank_id[0][0] }}" target="_blank">→ DrugBank</a></p>
   {% endif %}
+{% endblock %}
+
+{% block drugbank %}
+    <div><p>Terms of use: The displayed information is licensed under a <a href="https://creativecommons.org/licenses/by-nc/4.0/legalcode">CC BY-NC 4.0 license.</a> It is attributed to DrugBank.</p></div>
 {% endblock %}
 
 

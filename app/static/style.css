@@ -1,5 +1,16 @@
 body {
 	font-family: "Verdana";
+	background-color: #FDFDFD;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh
+}
+
+.content {
+	flex: 1;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -64,6 +75,14 @@ li a {
 	background-color: #DEDEDE;
 }
 
+#searchmicrocopy {
+	margin: -0.5em 1.5em 0 1.5em;
+}
+
+#searchmicrocopy p {
+	color: grey;
+}
+
 mark {
 	padding: 0.3em 0.3em 0.3em 1em;
 }
@@ -74,6 +93,28 @@ mark {
 
 .drugname {
 	font-size: 2em;
+}
+
+.label {
+	margin-top: 1.5em;
+}
+
+.accordion {
+	margin: 1.5em 0;
+	background-color: #eee;
+  	color: #444;
+  	padding: 1em;
+  	border: none;
+  	border-radius: 20px;
+}
+
+/* .active when clicked on, hover on mouse*/
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.panel {
+	display: none;
 }
 
 .container {
@@ -103,5 +144,7 @@ mark {
 
 @media only screen and (min-width: 769px) {
 	#searchfield {flex-basis: 50%}
+	#searchmicrocopy {text-align: center;}
 	.cards {flex-direction: row}
+	body {padding: 0 4em;}
 }

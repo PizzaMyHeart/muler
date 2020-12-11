@@ -1,33 +1,43 @@
 <!doctype html>
+<html>
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="/static/style.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet"> 
+
   <title>{% block title %}{% endblock %} Muler</title>
 </head>
 
 
-<body>
-  <nav>
-    <ul>
-      <li class="push"><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </nav>
+<body class="wrapper">
+  <main class="content">
+    <nav>
+      <ul>
+        <li class="push"><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
 
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block searchbar %}
-    <form method='post' id='searchbar'>
-      <input type='text' name='search' placeholder='Search for a drug ...' id="searchfield">
-      <input type='submit' value='⌕' id='searchbtn'>
-    </form>
-  {% endblock %}
-  <section class="container">{% block content %}{% endblock %}</section>
-  <section class="container">{% block index %}{% endblock %}</section> 
-
+    {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block searchbar %}
+      <form method='post' id='searchbar'>
+        <input type='text' name='search' placeholder='Enter drug name e.g. aspirin' id="searchfield">
+        <input type='submit' value='⌕' id='searchbtn'>
+      </form>
+    {% endblock %}
+    {% block searchmicrocopy %}{% endblock %}
+    <section class="container">{% block content %}{% endblock %}</section>
+    <section class="container">{% block index %}{% endblock %}</section> 
+  </main>
+  <footer>
+    {% block drugbank %}{% endblock %}
+  </footer>
+  
 </body>
+</html>
+<script src="/static/script.js"></script>

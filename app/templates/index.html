@@ -2,6 +2,7 @@
 {% extends 'base.html' %}
 
 {% block searchbar %}{{ super() }}{% endblock %}
+{% block searchmicrocopy %}<div id="searchmicrocopy"><p>Pick a drug, any drug.</p></div>{% endblock %}
 
 
 {% block index %}
@@ -12,7 +13,7 @@
 		</div>
 		<div class="card">
 			<header><h2>&#128300; More than 13,000 drugs indexed <sub>//</sub></h4></header>
-			<p class=>Sourced from <a href="https://go.drugbank.com/">DrugBank</a>, a leading bioinformatics and chemoinformatics database.</p>
+			<p class=>Sourced from <a href="https://go.drugbank.com/" target="_blank">DrugBank</a>, a leading bioinformatics and chemoinformatics database.</p>
 		</div>
 		<div class="card">
 			<header><h2>&#128176; Absolutely free to use, forever <sub>//</sub></h4></header>
