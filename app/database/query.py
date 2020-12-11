@@ -80,9 +80,9 @@ def get_results(search, patterns_values, patterns, session):
                 search =  max(similarities, key = similarities.get)
                 max_value = max(similarities.values())
                 print('Similarity:', max_value)
-                # Provide 5 most similar patterns
+                # Provide a few similar patterns at intervals from max
                 suggestions = sorted(similarities,
-                                     key = similarities.get, reverse = True)[:5]
+                                     key = similarities.get, reverse = True)[:10:2]
                 # Capitalise similar product names
                 suggestions = [i.capitalize() for i in suggestions]
                 print('Did you mean:', search, '?')

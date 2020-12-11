@@ -2,9 +2,11 @@ body {
 	font-family: "Verdana";
 }
 
-p {
-	font-size: 1em;
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Roboto", sans-serif;
 }
+
+
 
 nav ul {
 	display: flex;
@@ -15,6 +17,12 @@ nav ul {
 nav ul li {
 	margin: 0 5px;
 	list-style: none;
+	flex-basis: 5%;
+}
+
+li a {
+	display: block;
+	text-decoration: none
 }
 
 /* Push flex item to right */
@@ -39,22 +47,29 @@ nav ul li {
 	flex-basis: 100%;
 	font-size: 20px;
 	font-family: "Arial";
-	padding: 0.3em;
 	border-style: solid none solid solid;
 	border-radius: 60px 0 0 60px;
 	margin-left: 1em;
+	padding-left: 1em
 }
 
 #searchbtn {
 	font-size: 2em;
-	padding: 0.3em;
 	border-style: solid solid solid none;
 	border-radius: 0 60px 60px 0;
 	margin-right: 1em;
 }
 
 #searchbtn:hover{
-	background-color: #dedede;
+	background-color: #DEDEDE;
+}
+
+mark {
+	padding: 0.3em 0.3em 0.3em 1em;
+}
+
+.heading {
+	background-color: ;
 }
 
 .drugname {
@@ -73,7 +88,8 @@ nav ul li {
 
 .card {
 	width: 20em;
-	box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.2);
+	border-style: none;
+	display: inline;
 	margin: 2em auto 0 auto;
 }
 
@@ -82,12 +98,10 @@ nav ul li {
 }
 
 .icon {
-	font-size: 6em;
+	font-size: 2em;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 769px) {
 	#searchfield {flex-basis: 50%}
-	#searchfield {padding: 1em}
-	#searchbtn {padding: 1em}
 	.cards {flex-direction: row}
 }
