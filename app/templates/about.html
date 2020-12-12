@@ -4,17 +4,19 @@
 {% block searchbar %}{% endblock %}
 
 {% block content %}
-<p><b>Muler does not provide prescribing or dispensing advice.</b> <a href="/legal">More info</a></p>
+<p><b>Muler does not provide prescribing or dispensing advice. More info <a href="/legal">here</b></a>.</p>
 <p>
-	Muler is a concise reference for students of healthcare professions who are learning or revising pharmacology concepts. The BNF, Medscape, and MIMS are commonly used professional resources, but they contain a <i>lot</i> of information. Sometimes all you need is a short and sweet reminder of how pilocarpine works.
+	Muler is a concise reference for students of healthcare professions who are learning or revising pharmacology concepts. The BNF, Medscape, and MIMS are commonly used professional resources, but they contain a <i>lot</i> of information. Sometimes all you need is a short and sweet reminder of how pilocarpine works, without messing around with institutional or personal subscriptions.
 </p>
 <p>
-	Rather than replacing existing educational resources, Muler is a handy little search engine that lets you quickly look up the pharmacodynamics and mechanism of action of 13,579 drugs. This information comes a dataset by DrugBank, and it is boiled down to the relevant bits: common indications, mechanism of action, and pharmacodynamics. Note that the indications are taken from FDA approval information and may not be applicable across geographical settings. 
+	Rather than replacing existing educational resources, Muler is a handy little search engine that lets you quickly look up the pharmacodynamics and mechanism of action of 13,579 drugs. This information comes from a dataset by DrugBank, and it is boiled down to the relevant bits: common indications, mechanism of action, and pharmacodynamics. Note that the indications are taken from FDA approval information and may not be applicable across geographical settings. 
 <p>
-	I've been using DrugBank as a reference site (feels a bit more reliable than Wikipedia) for information not available on the BNF for some time now. The thing is, DrugBank is more targeted at researchers and their pages can feel quite cluttered with all the molecular and 
+	I've been using DrugBank as a reference site (which feels a bit more reliable than Wikipedia) for information unavailable on the BNF for some time now. The thing is, DrugBank is more targeted at researchers and their pages can feel quite cluttered. I built a Python script to access the dataset on the command line for just the parts that I wanted, and I thought there had to be someone else who finds this useful too. Hence this web app.
 </p>
 
 </p>
-	Hopefully learning pharmacology will become a little less painful ♥
+	Here's to helping make learning pharmacology a little less painful ♥
 </p>
+
+<p><a href="https://github.com/PizzaMyHeart/muler" target="_blank" class="outbound">→ Source code</a></p>
 {% endblock %}

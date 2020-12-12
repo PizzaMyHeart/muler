@@ -25,12 +25,12 @@
     <div class="panel">{{ synonyms }}</div>
     <button class="accordion">Products</button>
     <div class="panel">{{ products }}</div>
-    <p><a href="https://go.drugbank.com/drugs/{{ drugbank_id[0][0] }}" target="_blank">→ DrugBank</a></p>
+    <p><a href="https://go.drugbank.com/drugs/{{ drugbank_id[0][0] }}" target="_blank" class="outbound">→ DrugBank</a></p>
   {% endif %}
 {% endblock %}
 
 {% block drugbank %}
-    <div><p>Terms of use: The displayed information is licensed under a <a href="https://creativecommons.org/licenses/by-nc/4.0/legalcode">CC BY-NC 4.0 license.</a> It is attributed to DrugBank.</p></div>
+    <div><p>Terms of use: The displayed information is licensed under a <a href="https://creativecommons.org/licenses/by-nc/4.0/legalcode">CC BY-NC 4.0 license.</a> It is attributed to <a href="https://go.drugbank.com/" target="_blank">DrugBank</a>.</p></div>
 {% endblock %}
 
 
