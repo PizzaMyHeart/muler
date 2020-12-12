@@ -34,8 +34,11 @@ def create_app(test_config=None):
 
     @app.route('/about')
     def about():
-      #return render_template('about.html')
-      return 'Under construction'
+      return render_template('about.html')
+
+    @app.route('/legal')
+    def legal():
+      return render_template('legal.html')
 
     @app.route('/<link>', methods=['GET', 'POST'])
     def link(link):
