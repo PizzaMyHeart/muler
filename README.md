@@ -2,6 +2,8 @@
 
 Muler is a Flask app that allows users to search for pharmacological information by generic or proprietary drug names. The information is sourced from a DrugBank dataset under a CC BY-NC 4.0 license. 
 
+Requires an sqlite3 database 'muler.db' in /app/database/
+
 
 
 TODO
