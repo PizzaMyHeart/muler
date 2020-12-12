@@ -1,5 +1,9 @@
 # Muler
 
+Muler is a Flask app that allows users to search for pharmacological information by generic or proprietary drug names. The information is sourced from a DrugBank dataset under a CC BY-NC 4.0 license. 
+
+
+
 TODO
 - XML parser [DONE]
 - Write to db [DONE]
@@ -8,20 +12,11 @@ TODO
   - Autocomplete.js
 - Regex sanitiser
   - Drop brackets [DONE]
-  - Strip trailing whitespace
-- Flask app
-  - Dropdown/expanding widgets for each type of info
-- Hosting
+  - Strip trailing whitespace [DONE]
+- Flask app 
 - Synonyms e.g. aspirin = acetylsalicylic acid, paracetamol = acetaminophen [DONE]
 - Indication [DONE]
 - Drug class (<atc-codes>) [DONE]
 - Brand names (<products>) [DONE]
 - Update rofecoxib and mephenytoin mechanism of action [DONE]
 - Approved/withdrawn/investigational (Groups)
-
-
-
-Requirements
-- fuzzywuzzy-0.18.0
-- python-levenshtein-0.12.0
-- sqlalchemy
