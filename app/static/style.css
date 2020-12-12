@@ -169,22 +169,10 @@ footer a {
 	color: grey;
 }
 
-.footerwrap {
-	display: flex;
-	flex-direction: row
-}
 
 #legal {
-	margin-left: 2em;
 	font-size: 1.25em;
 }
-
-#legal a {
-	text-decoration: none;
-	color: grey;
-}
-
-
 
 
 @media only screen and (min-width: 769px) {
