@@ -13,7 +13,9 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-engine = create_engine('sqlite:///muler.db', echo=False)
+db = 'muler.db'
+
+engine = create_engine(f'sqlite:///{db}', echo=False)
 
 Base = declarative_base(engine)
 

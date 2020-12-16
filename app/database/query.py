@@ -10,8 +10,9 @@ from .regex import drop_tags
 
 def db_session():
 
+    db = 'muler.db'
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(BASE_DIR, 'muler.db')
+    db_path = os.path.join(BASE_DIR, db)
     db_url = 'sqlite:///' + db_path + '?check_same_thread=False'
 
     engine = create_engine(db_url, echo=False)
