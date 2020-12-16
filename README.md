@@ -1,13 +1,11 @@
 # Muler
 
-Muler is a Flask app that allows users to search for pharmacological information by generic or proprietary drug names. The information is sourced from a DrugBank dataset under a CC BY-NC 4.0 license. 
+Muler is a Flask app that allows users to search for pharmacological information by generic or proprietary drug names. The information is sourced from a DrugBank [dataset](https://go.drugbank.com/releases/latest) under a [CC BY-NC 4.0 license](https://creativecommons.org/licenses/by-nc/4.0/legalcode). The original dataset is a fairly large XML file, which has been processed into an SQLite database using a Python script. 
 
 ![Home page](/search.png?raw=true "Home page")
 
 ![Results page](/result.png?raw=true "Results page")
 
-
-Requires an sqlite3 database 'muler.db' in /app/database/
 
 ## Running Muler:
 
@@ -26,7 +24,7 @@ flask run
 Add ```--host 0.0.0.0:<port>``` to access the app from other devices on the local network.
 Note that use of the Flask server in production is strongly discouraged. 
 
-Instead of using Flask, you can also run Muler as a command-line script from the 'app' directory.
+Instead of using Flask, you can also run Muler as on the command line from the 'app' directory.
 
 ```
 python3 -m database.query
@@ -42,7 +40,6 @@ TODO
 - Flask app 
   - HTML form validation
     - Remove trailing whitespace
-  - Update test.db to use same schema as muler.db
   - CSS
     - Remove borders on searchbar focus on mobile
 
