@@ -5,8 +5,8 @@ import os.path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fuzzywuzzy import fuzz
-from database.models import Pharm, Name, Synonym, Product
-from database.regex import drop_tags
+from .models import Pharm, Name, Synonym, Product
+from .regex import drop_tags
 
 def db_session():
 
