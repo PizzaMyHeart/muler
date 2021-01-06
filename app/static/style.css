@@ -75,6 +75,10 @@ li a {
 	padding-left: 1em
 }
 
+#searchfield:focus {
+	outline: none;
+}
+
 #searchbtn {
 	font-size: 2em;
 	border-style: solid solid solid none;
@@ -82,8 +86,12 @@ li a {
 	margin-right: 1em;
 }
 
-#searchbtn:hover{
+#searchbtn:hover {
 	background-color: #DEDEDE;
+}
+
+#searchbtn:focus {
+	outline: none;
 }
 
 #searchmicrocopy {
@@ -117,6 +125,10 @@ mark {
   	padding: 1em;
   	border: none;
   	border-radius: 20px;
+}
+
+.accordion:focus {
+	outline: none;
 }
 
 /* .active when clicked on, hover on mouse*/
@@ -160,8 +172,7 @@ mark {
 
 footer {
 	display: flex;
-	flex-direction: column;
-	padding: 0 1.5em;
+	flex-direction: row;
 	font-size: 0.75em;
 }
 
@@ -170,10 +181,16 @@ footer a {
 }
 
 
-#legal {
+.footer-elem {
 	font-size: 1.25em;
+	margin-left: 1.5em;
 }
 
+/* Terms of use with licensing info*/
+#terms {
+	font-size: 0.75em;
+	color: grey;
+}
 
 @media only screen and (min-width: 769px) {
 	#searchfield {flex-basis: 50%}
