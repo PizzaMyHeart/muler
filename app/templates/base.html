@@ -33,10 +33,12 @@
     {% block searchmicrocopy %}{% endblock %}
     <section class="container">{% block content %}{% endblock %}</section>
     <section class="container">{% block index %}{% endblock %}</section> 
+    <section class="container">{% block drugbank %}{% endblock %}</section>
   </main>
   <footer>
-    <div id="legal"><a href="/legal">Legal</a></div>
-    {% block drugbank %}{% endblock %}
+    <div class="footer-elem"><a href="/legal">Legal</a></div>
+    <div class="footer-elem"><a href="https://ststats.pythonanywhere.com" target="_blank">ST Stats</a></div>
+    <div class="footer-elem"><a href="https://tachy.org" target="_blank">Tachy</a></div>
   </footer>
   
 </body>
