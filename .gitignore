@@ -1,4 +1,7 @@
-# Database
+**/.secrets
+
+
+# Database stuff
 database.xml
 drugbank.xsd
 
@@ -29,7 +32,7 @@ wheels/
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Flask stuff:
+# Flask stuff
 instance/
 .webassets-cache
 
