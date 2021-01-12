@@ -14,8 +14,8 @@ def db_session():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     db_path = os.path.join(BASE_DIR, db)
     #db_url = 'sqlite:///' + db_path + '?check_same_thread=False'
-    db_url = 'mysql+pymysql://ian@localhost/muler'
-    engine = create_engine(db_url, echo=False)
+    db_url = 'mysql+pymysql://ian@localhost/muler' # Change this when deploying
+    engine = create_engine(db_url, echo=False, pool_recycle=3600)
     Session = sessionmaker(bind=engine)
     session = Session()
     return session
