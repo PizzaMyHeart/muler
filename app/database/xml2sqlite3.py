@@ -31,13 +31,13 @@ def create_table(table, columns):
     ''')
     print(table, 'created')
 
-create_table('pharm', ['drugbank_id varchar PRIMARY KEY',
+create_table('pharm', ['drugbank_id varchar(10) PRIMARY KEY',
                        'pd text', 'mech text', 'ind text', 'd_class text'])
-create_table('name', ['drugbank_id varchar PRIMARY KEY',
+create_table('name', ['drugbank_id varchar(10) PRIMARY KEY',
                       'name text'])
-create_table('synonym', ['drugbank_id varchar', 'synonym text', 
+create_table('synonym', ['drugbank_id varchar(10)', 'synonym text', 
                          'FOREIGN KEY (drugbank_id) REFERENCES name(drugbank_id)'])
-create_table('product', ['drugbank_id varchar', 'product text', 
+create_table('product', ['drugbank_id varchar(10)', 'product text', 
                          'FOREIGN KEY (drugbank_id) REFERENCES name(drugbank_id)'])
 
 # Turn XML file into iterable
