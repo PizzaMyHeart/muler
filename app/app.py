@@ -5,10 +5,12 @@ from flask import Flask, render_template, request, redirect, url_for
 from database import query, regex
 import markdown
 
-session = query.db_session()
-patterns_values, patterns = query.patterns(session)
+#session = query.db_session()
+#patterns_values, patterns = query.patterns(session)
 
 def search(search):
+    session = query.db_session()
+    patterns_values, patterns = query.patterns(session)
 
     results = query.get_results(search, patterns_values, patterns, session)
     drugbank_id, name, d_class, ind, pd, mech, synonyms, products, suggestions = results
@@ -31,7 +33,7 @@ def search(search):
 def create_app(test_config=None):
  
     app = Flask(__name__, instance_relative_config=True)
-
+    
     @app.route('/about')
     def about():
       return render_template('about.html')
