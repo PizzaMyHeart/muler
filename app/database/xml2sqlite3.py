@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 import sqlite3
 
 source = 'database.xml'
-database = 'muler.db'
+database = 'test.db' # Change this to something other than muler.db
 
 conn = sqlite3.connect(database)
 cur = conn.cursor()
@@ -31,13 +31,13 @@ def create_table(table, columns):
     ''')
     print(table, 'created')
 
-create_table('pharm', ['drugbank_id text PRIMARY KEY',
+create_table('pharm', ['drugbank_id varchar PRIMARY KEY',
                        'pd text', 'mech text', 'ind text', 'd_class text'])
-create_table('name', ['drugbank_id text PRIMARY KEY',
+create_table('name', ['drugbank_id varchar PRIMARY KEY',
                       'name text'])
-create_table('synonym', ['drugbank_id text', 'synonym text', 
+create_table('synonym', ['drugbank_id varchar', 'synonym text', 
                          'FOREIGN KEY (drugbank_id) REFERENCES name(drugbank_id)'])
-create_table('product', ['drugbank_id text', 'product text', 
+create_table('product', ['drugbank_id varchar', 'product text', 
                          'FOREIGN KEY (drugbank_id) REFERENCES name(drugbank_id)'])
 
 # Turn XML file into iterable
