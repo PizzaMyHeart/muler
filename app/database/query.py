@@ -13,8 +13,8 @@ def db_session():
     db = 'muler.db'
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     db_path = os.path.join(BASE_DIR, db)
-    db_url = 'sqlite:///' + db_path + '?check_same_thread=False'
-
+    #db_url = 'sqlite:///' + db_path + '?check_same_thread=False'
+    db_url = 'mysql+pymysql://ian@localhost/muler'
     engine = create_engine(db_url, echo=False)
     Session = sessionmaker(bind=engine)
     session = Session()
