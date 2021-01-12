@@ -7,7 +7,7 @@ Muler is a Flask app that allows users to search for pharmacological information
 ![Results page](/result.png?raw=true "Results page")
 
 
-## Running Muler:
+## Running Muler
 
 1. Enter the 'app' directory
 
@@ -45,3 +45,9 @@ TODO
 
 - Update rofecoxib and mephenytoin mechanism of action [DONE]
 - Approved/withdrawn/investigational (Groups)
+
+
+## Changelog
+
+### 2021-01-12
+- Migrated from SQLite to MySQL using sqlite3-to-mysql.py
