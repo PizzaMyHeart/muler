@@ -2,6 +2,7 @@
 
 
 import os.path
+from database import config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fuzzywuzzy import fuzz
@@ -14,7 +15,7 @@ def db_session():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     db_path = os.path.join(BASE_DIR, db)
     #db_url = 'sqlite:///' + db_path + '?check_same_thread=False'
-    db_url = 'mysql+pymysql://ian@localhost/muler' # Change this when deploying
+    db_url = config.db_config['pa_mysql_db'] # Change this when deploying
     engine = create_engine(db_url, echo=False, pool_recycle=3600, connect_args={'connect_timeout': 1000}, pool_pre_ping=True)
     Session = sessionmaker(bind=engine)
     session = Session()
