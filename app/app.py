@@ -5,12 +5,10 @@ from flask import Flask, render_template, request, redirect, url_for
 from database import query, regex
 import markdown
 
-#session = query.db_session()
-#patterns_values, patterns = query.patterns(session)
+session = query.db_session()
+patterns_values, patterns = query.patterns(session)
 
 def search(search):
-    session = query.db_session()
-    patterns_values, patterns = query.patterns(session)
 
     results = query.get_results(search, patterns_values, patterns, session)
     drugbank_id, name, d_class, ind, pd, mech, synonyms, products, suggestions = results
@@ -48,7 +46,7 @@ def create_app(test_config=None):
             userinput = request.form['search'].lower()
             return redirect(url_for('link', link=userinput))
             #return search(request.form['search'])
-            
+        session.close()
         return search(link.lower())
     
     @app.route('/', methods=['GET', 'POST'])
@@ -59,5 +57,5 @@ def create_app(test_config=None):
             #return search(request.form['search'])            
         elif request.method == 'GET':    
             return render_template('index.html')
-
+        session.close()
     return app

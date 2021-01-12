@@ -11,11 +11,11 @@ from .regex import drop_tags
 
 def db_session():
 
-    db = 'muler.db'
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(BASE_DIR, db)
+    #db = 'muler.db'
+    #BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    #db_path = os.path.join(BASE_DIR, db)
     #db_url = 'sqlite:///' + db_path + '?check_same_thread=False'
-    db_url = config.db_config['pa_mysql_db'] # Change this when deploying
+    db_url = config.db_config['local_mysql_db'] # Change this when deploying
     engine = create_engine(db_url, echo=False, pool_recycle=3600, connect_args={'connect_timeout': 1000}, pool_pre_ping=True)
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -179,5 +179,6 @@ if __name__ == '__main__':
     patterns_values, patterns = patterns(session)
     search = userinput()
     results = get_results(search, patterns_values, patterns, session)
+
     
     
