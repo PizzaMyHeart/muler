@@ -16,7 +16,9 @@ def db_session():
     #db_path = os.path.join(BASE_DIR, db)
     #db_url = 'sqlite:///' + db_path + '?check_same_thread=False'
     db_url = config.db_config['local_mysql_db'] # Change this when deploying
-    engine = create_engine(db_url, echo=False, pool_recycle=3600, connect_args={'connect_timeout': 1000}, pool_pre_ping=True)
+    # Set pool_recycle to < 300 to avoid disconnection errors.
+    # See https://help.pythonanywhere.com/pages/UsingSQLAlchemywithMySQL
+    engine = create_engine(db_url, echo=False, pool_recycle=280, connect_args={'connect_timeout': 1000}, pool_pre_ping=True)
     Session = sessionmaker(bind=engine)
     session = Session()
     return session
