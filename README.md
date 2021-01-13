@@ -9,10 +9,10 @@ Muler is a Flask app that allows users to search for pharmacological information
 
 ## Running Muler
 
-1. Enter the 'app' directory
+1. Enter the 'muler' directory
 
 ```
-cd <basedir>/app
+cd <basedir>/muler
 ```
 
 2. Start the Flask server
@@ -24,10 +24,10 @@ flask run
 Add ```--host 0.0.0.0:<port>``` to access the app from other devices on the local network.
 Note that use of the Flask server in production is strongly discouraged. 
 
-Instead of using Flask, you can also run Muler as on the command line from the 'app' directory.
+Instead of using Flask, you can also run Muler as on the command line from the base directory.
 
 ```
-python3 -m database.query
+python3 -m muler.query
 ```
 
 

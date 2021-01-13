@@ -12,10 +12,9 @@ Product
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+import muler.config as config
 
-db = 'muler.db'
-
-engine = create_engine(f'sqlite:///{db}', echo=False)
+engine = create_engine(config.db_config['local_mysql_db'], echo=False)
 
 Base = declarative_base(engine)
 

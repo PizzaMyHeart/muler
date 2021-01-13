@@ -1,20 +1,14 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
-
-import os.path
-from database import config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fuzzywuzzy import fuzz
-from .models import Pharm, Name, Synonym, Product
-from .regex import drop_tags
+from muler.models import Pharm, Name, Synonym, Product
+from muler.database.regex import drop_tags
+import muler.config as config
 
 def db_session():
 
-    #db = 'muler.db'
-    #BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    #db_path = os.path.join(BASE_DIR, db)
-    #db_url = 'sqlite:///' + db_path + '?check_same_thread=False'
     db_url = config.db_config['local_mysql_db'] # Change this when deploying
     # Set pool_recycle to < 300 to avoid disconnection errors.
     # See https://help.pythonanywhere.com/pages/UsingSQLAlchemywithMySQL
@@ -147,21 +141,10 @@ def get_results(search, patterns_values, patterns, session):
             products = (session.query(Product.product)
                         .filter(Product.drugbank_id == i[0]).all())
             
-            print('Name:', name, '\n')
-            print('Class:', d_class, '\n')
-            print('Indication:', drop_tags(ind), '\n')
-            print('Pharmacodynamics:', drop_tags(pd), '\n')
-            print('Mechanism of action:', drop_tags(mech), '\n')
-            print('Synonyms:')
-            for synonym in synonyms:
-                if synonym[0] != name:
-                    print(synonym[0], end = ' | ')
-            print('\nFound in:')
-            for product in products:
-                #print(product[0], end = ', ')
-                pass
-        return drugbank_id, name, d_class, ind, pd, mech, synonyms, products, suggestions
-    
+        #return drugbank_id, name, d_class, ind, pd, mech, synonyms, products, suggestions
+        return dict(drugbank_id=drugbank_id, 
+                    name=name, d_class=d_class, ind=ind, pd=pd, mech=mech, synonyms=synonyms, products=products, suggestions=suggestions)
+
     search, table, suggestions = get_search(search, patterns_values, patterns)
     results = query(search, table, session)
     return results
@@ -182,5 +165,22 @@ if __name__ == '__main__':
     search = userinput()
     results = get_results(search, patterns_values, patterns, session)
 
+
+    print('Name:', results['name'], '\n')
+    print('Class:', results['d_class'], '\n')
+    print('Indication:', drop_tags(results['ind']), '\n')
+    print('Pharmacodynamics:', drop_tags(results['pd']), '\n')
+    print('Mechanism of action:', drop_tags(results['mech']), '\n')
+    print('Synonyms:')
+    for synonym in results['synonyms']:
+        if synonym[0] != results['name']:
+            print(synonym[0], end = ' | ')
+    print('\nFound in:')
+    for product in results['products']:
+        # This is a very long list
+        #print(product[0], end = ', ')
+        pass
+    
+    session.close()
     
     
