@@ -28,6 +28,10 @@ def search(search):
                            suggestions=results['suggestions'])
 
 
+def get_userinput():
+    userinput = request.form['search'].lower().strip()
+    return userinput
+
 def create_app(test_config=None):
 
  
@@ -43,17 +47,17 @@ def create_app(test_config=None):
 
     @app.route('/<link>', methods=['GET', 'POST'])
     def link(link):
+        """Queries the database via search() using the url slug 
+        """
         if request.method == 'POST':
-            userinput = request.form['search'].lower().strip()
-            return redirect(url_for('link', link=userinput))
+            return redirect(url_for('link', link=get_userinput()))
 
         return search(link.lower())
     
     @app.route('/', methods=['GET', 'POST'])
     def index():
         if request.method == 'POST':
-            userinput = request.form['search'].lower().strip()
-            return redirect(url_for('link', link=userinput))        
+            return redirect(url_for('link', link=get_userinput()))        
         elif request.method == 'GET':    
             return render_template('index.html')
     
