@@ -37,7 +37,7 @@ def userinput():
     '''
     Get user input
     '''
-    userinput = input('Search:').lower()
+    userinput = input('Search:').lower().strip()
     return userinput
 
 
