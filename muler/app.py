@@ -12,9 +12,6 @@ def search(searchterm):
 
     results = query.get_results(searchterm, patterns_values, patterns, session)
     lambda x: markdown.markdown([results[x] for x in ['ind', 'pd', 'mech']])
-    #results['ind'] = markdown.markdown(results['ind'])
-    #results['pd'] = markdown.markdown(results['pd'])
-    #results['mech'] = markdown.markdown(results['mech'])
     session.close()
     return render_template('result.html',
                            results=results,
@@ -34,8 +31,6 @@ def get_userinput():
     return userinput
 
 def create_app(test_config=None):
-
- 
     app = Flask(__name__, instance_relative_config=True)
     
     @app.route('/about')
@@ -48,9 +43,9 @@ def create_app(test_config=None):
 
     @app.route('/<link>', methods=['GET', 'POST'])
     def link(link):
-        """Queries the database via search() using the url slug 
-        """
-        if request.method == 'POST':
+        '''Queries the database via search() using the url slug 
+        '''
+        if request.method == 'POST':    # Searching while on a result page
             return redirect(url_for('link', link=get_userinput()))
 
         return search(link.lower())

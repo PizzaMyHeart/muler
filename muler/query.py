@@ -18,7 +18,12 @@ def db_session():
     return session
 
 def patterns(session):
-
+    '''Get the values in the database for the searchterm to match against
+    Returns
+        patterns_values - a 1-D list of patterns.values (name, synonym, product,
+                            name, synonym, product ...)
+        patterns - a dict containing the unflattened values in patterns_values
+    '''
     patterns = ({'Name': [row.name for row in session.query(Name.name)],
                  'Synonym': [row.synonym for row in session.query(Synonym.synonym)],
                  'Product': [row.product for row in session.query(Product.product)]})
@@ -34,76 +39,74 @@ def patterns(session):
     return patterns_values, patterns
 
 def userinput():
-    '''
-    Get user input
-    '''
+    '''Get user input'''
     userinput = input('Search:').lower().strip()
     return userinput
 
 
 def get_results(searchterm, patterns_values, patterns, session):
+    # ?rewrite as class
+    '''Gets drug with best match and associated data
+    Args
+        searchterm - user input
+        patterns_values - flattened list of values in patterns
+        patterns - dict containing unflattened values
+        session - DB session
+
+    Returns
+        results - dict containing data for the matched drug
+    '''
     def get_drugname(searchterm, patterns_values, patterns):
-        '''
-        Takes user input and matches it against rows in name column
+        '''Compares search term with drug names (generic, synonym, or product) 
+            in DB and returns best match.
 
         Args
             searchterm - user input
             patterns_values - flat list of names, synonyms and products
 
         Returns
-            querystring - matched name in table
-            table - table containing the matched name
+            searchterm - matched name in table (may not be original user input)
+            table - table containing the matched name (determine whether input is Name,
+                    Synonym, or Product)
+            suggestions - a list of similar matches 
         '''
         table = ''
         suggestions = None
-        while True:
-            #searchterm = input('Search:').lower()
-            if searchterm == 'quit':
+
+        if searchterm not in patterns_values:
+            # Return name with highest similarity score
+            similarities = {}
+            for value in patterns_values:
+                similarity = fuzz.token_sort_ratio(value.lower(), searchterm.lower())
+                #print(pattern.lower(), searchterm.lower(), similarity)
+                similarities.update({value.lower(): similarity})
+            searchterm =  max(similarities, key = similarities.get)
+            max_value = max(similarities.values())
+            print('Similarity:', max_value)
+            # Provide a few similar patterns at intervals from max
+            suggestions = sorted(similarities,
+                                    key = similarities.get, reverse = True)[:10:2]
+            # Capitalise similar product names
+            suggestions = [i.capitalize() for i in suggestions]
+            print('Did you mean:', searchterm, '?')
+            print('Other suggestions:', suggestions)
+        
+        # Get key
+        for item in patterns.items():
+            # items() returns tuples of key-value pairs
+            if searchterm in [i.lower() for i in item[1]]:
+                table = item[0]
+                # Stop iterating if found earlier e.g. in 'Name'
                 break
-            if searchterm == '':
-                print('Please enter a search term.')
-                continue
-            if searchterm == 'na':
-                print('No results found.')
-                return False
 
-
-            if searchterm not in patterns_values:
-                # Return name with highest similarity score
-                similarities = {}
-                for value in patterns_values:
-                    similarity = fuzz.token_sort_ratio(value.lower(), searchterm.lower())
-                    #print(pattern.lower(), searchterm.lower(), similarity)
-                    similarities.update({value.lower(): similarity})
-                searchterm =  max(similarities, key = similarities.get)
-                max_value = max(similarities.values())
-                print('Similarity:', max_value)
-                # Provide a few similar patterns at intervals from max
-                suggestions = sorted(similarities,
-                                     key = similarities.get, reverse = True)[:10:2]
-                # Capitalise similar product names
-                suggestions = [i.capitalize() for i in suggestions]
-                print('Did you mean:', searchterm, '?')
-                print('Other suggestions:', suggestions)
-            
-            # Get key
-            for item in patterns.items():
-                # items() returns tuples of key-value pairs
-                if searchterm in [i.lower() for i in item[1]]:
-                    table = item[0]
-                    # Stop iterating if found earlier e.g. in 'Name'
-                    break
-
-
-
-            print('Matched:', searchterm)
-            print('Table:', table)
-            return searchterm, table, suggestions
-
-
+        print('Matched:', searchterm)
+        print('Table:', table)
+        return searchterm, table, suggestions
 
     def query(searchterm, table, session):
-        '''
+        '''Finds the drugbank ID and uses it to look up all associated data.
+        Returns
+            dict containing all associated data for matched drug
 
         '''
         
