@@ -8,12 +8,13 @@ import muler.query as query
 session = query.db_session()
 patterns_values, patterns = query.patterns(session)
 
-def search(search):
+def search(searchterm):
 
-    results = query.get_results(search, patterns_values, patterns, session)
-    results['ind'] = markdown.markdown(results['ind'])
-    results['pd'] = markdown.markdown(results['pd'])
-    results['mech'] = markdown.markdown(results['mech'])
+    results = query.get_results(searchterm, patterns_values, patterns, session)
+    lambda x: markdown.markdown([results[x] for x in ['ind', 'pd', 'mech']])
+    #results['ind'] = markdown.markdown(results['ind'])
+    #results['pd'] = markdown.markdown(results['pd'])
+    #results['mech'] = markdown.markdown(results['mech'])
     session.close()
     return render_template('result.html',
                            results=results,

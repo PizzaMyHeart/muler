@@ -41,13 +41,13 @@ def userinput():
     return userinput
 
 
-def get_results(search, patterns_values, patterns, session):
-    def get_search(search, patterns_values, patterns):
+def get_results(searchterm, patterns_values, patterns, session):
+    def get_drugname(searchterm, patterns_values, patterns):
         '''
         Takes user input and matches it against rows in name column
 
         Args
-            search - user input
+            searchterm - user input
             patterns_values - flat list of names, synonyms and products
 
         Returns
@@ -57,25 +57,25 @@ def get_results(search, patterns_values, patterns, session):
         table = ''
         suggestions = None
         while True:
-            #search = input('Search:').lower()
-            if search == 'quit':
+            #searchterm = input('Search:').lower()
+            if searchterm == 'quit':
                 break
-            if search == '':
+            if searchterm == '':
                 print('Please enter a search term.')
                 continue
-            if search == 'na':
+            if searchterm == 'na':
                 print('No results found.')
                 return False
 
 
-            if search not in patterns_values:
+            if searchterm not in patterns_values:
                 # Return name with highest similarity score
                 similarities = {}
                 for value in patterns_values:
-                    similarity = fuzz.token_sort_ratio(value.lower(), search.lower())
-                    #print(pattern.lower(), search.lower(), similarity)
+                    similarity = fuzz.token_sort_ratio(value.lower(), searchterm.lower())
+                    #print(pattern.lower(), searchterm.lower(), similarity)
                     similarities.update({value.lower(): similarity})
-                search =  max(similarities, key = similarities.get)
+                searchterm =  max(similarities, key = similarities.get)
                 max_value = max(similarities.values())
                 print('Similarity:', max_value)
                 # Provide a few similar patterns at intervals from max
@@ -83,43 +83,43 @@ def get_results(search, patterns_values, patterns, session):
                                      key = similarities.get, reverse = True)[:10:2]
                 # Capitalise similar product names
                 suggestions = [i.capitalize() for i in suggestions]
-                print('Did you mean:', search, '?')
+                print('Did you mean:', searchterm, '?')
                 print('Other suggestions:', suggestions)
             
             # Get key
             for item in patterns.items():
                 # items() returns tuples of key-value pairs
-                if search in [i.lower() for i in item[1]]:
+                if searchterm in [i.lower() for i in item[1]]:
                     table = item[0]
                     # Stop iterating if found earlier e.g. in 'Name'
                     break
 
 
 
-            print('Matched:', search)
+            print('Matched:', searchterm)
             print('Table:', table)
-            return search, table, suggestions
+            return searchterm, table, suggestions
 
 
 
-    def query(search, table, session):
+    def query(searchterm, table, session):
         '''
 
         '''
         
         drugbank_id = ''
-        if search:
+        if searchterm:
             if table == 'Name':
                 drugbank_id = (session.query(Name.drugbank_id)
-                               .filter(Name.name.ilike(search))
+                               .filter(Name.name.ilike(searchterm))
                                .all())
             elif table == 'Synonym':
                 drugbank_id = (session.query(Synonym.drugbank_id)
-                               .filter(Synonym.synonym.ilike(search))
+                               .filter(Synonym.synonym.ilike(searchterm))
                                .all())
             elif table == 'Product':
                 drugbank_id = (session.query(Product.drugbank_id)
-                               .filter(Product.product.ilike(search))
+                               .filter(Product.product.ilike(searchterm))
                                .all())
 
         # If product contains multiple ingredients:
@@ -145,8 +145,8 @@ def get_results(search, patterns_values, patterns, session):
         return dict(drugbank_id=drugbank_id, 
                     name=name, d_class=d_class, ind=ind, pd=pd, mech=mech, synonyms=synonyms, products=products, suggestions=suggestions)
 
-    search, table, suggestions = get_search(search, patterns_values, patterns)
-    results = query(search, table, session)
+    searchterm, table, suggestions = get_drugname(searchterm, patterns_values, patterns)
+    results = query(searchterm, table, session)
     return results
 
 def stringify(obj):
@@ -162,8 +162,8 @@ def stringify(obj):
 if __name__ == '__main__':
     session = db_session()
     patterns_values, patterns = patterns(session)
-    search = userinput()
-    results = get_results(search, patterns_values, patterns, session)
+    searchterm = userinput()
+    results = get_results(searchterm, patterns_values, patterns, session)
 
 
     print('Name:', results['name'], '\n')
