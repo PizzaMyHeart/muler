@@ -52,7 +52,9 @@ from muler.app import create_app
 application = create_app()
 ```
 
-3. Upload config.py (contains database paths), which is untracked by Git. Make sure it's located in ```/home/muler/muler/muler/``` (I know, *sigh*).
+3. Make sure config.py (contains database paths) is uploaded, which is untracked by Git. Make sure it's located in ```/home/muler/muler/muler/``` (I know, *sigh*).
+
+4. Edit ```db_config``` key in ```db_session``` function in ```query.py``` to make sure the app is pointed to the right database URL.
 
 TODO
 
@@ -80,3 +82,4 @@ TODO
 
 ### 2021-07-16
 - Input sanitisation and minor optimisations for faster response time (not formally measured)
+- Rewrote functions to search database using user input with class methods
