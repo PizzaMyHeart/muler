@@ -17,7 +17,7 @@ def db_session():
     session = Session()
     return session
 
-def patterns(session):
+def get_patterns(session):
     '''Get the values in the database for the searchterm to match against
     Returns
         patterns_values - a 1-D list of patterns.values (name, synonym, product,
@@ -38,11 +38,130 @@ def patterns(session):
     patterns_values = [i.lower() for i in patterns_values]
     return patterns_values, patterns
 
+class Query():
+    def __init__(self, context):
+        self.context = context
+        # Session and patterns need to be initialised outside of the class before 
+        # calling get_results()
+        self.session = session
+        self.pattern_values, self.patterns = pattern_values, patterns
+
+    def userinput(self):
+        '''Get user input'''
+        userinput = input('Search:').lower().strip()
+        return userinput
+
+    def get_drugname(self, searchterm, patterns_values, patterns):
+        '''Compares search term with drug names (generic, synonym, or product) 
+            in DB and returns best match.
+
+        Args
+            searchterm - user input
+            patterns_values - flat list of names, synonyms and products
+
+        Returns
+            searchterm - matched name in table (may not be original user input)
+            table - table containing the matched name (determine whether input is Name,
+                    Synonym, or Product)
+            suggestions - a list of similar matches 
+        '''
+        table = ''
+        suggestions = None
+        if searchterm not in patterns_values:
+            # Return name with highest similarity score
+            similarities = {}
+            for value in patterns_values:
+                similarity = fuzz.token_sort_ratio(value.lower(), searchterm.lower())
+                #print(pattern.lower(), searchterm.lower(), similarity)
+                similarities.update({value.lower(): similarity})
+            matched_name =  max(similarities, key = similarities.get)
+            max_value = max(similarities.values())
+            print('Similarity:', max_value)
+            # Provide a few similar patterns at intervals from max
+            suggestions = sorted(similarities,
+                                    key = similarities.get, reverse = True)[:10:2]
+            # Capitalise similar product names
+            suggestions = [i.capitalize() for i in suggestions]
+            print('Did you mean:', matched_name, '?')
+            print('Other suggestions:', suggestions)
+        else:
+            matched_name = searchterm
+        # Get key
+        for item in patterns.items():
+            # items() returns tuples of key-value pairs
+            if matched_name in [i.lower() for i in item[1]]:
+                table = item[0]
+                # Stop iterating if found earlier e.g. in 'Name'
+                break
+
+        print('Matched:', matched_name)
+        print('Table:', table)
+        return matched_name, table, suggestions
+
+    def query(self, searchterm, table, session):
+        '''Finds the drugbank ID and uses it to look up all associated data.
+        Args
+            searchterm - matched drug name
+            table - table containing matched name (Name, Synonym, or Product)
+            session - DB session
+        Returns
+            dict containing all associated data for matched drug
+
+        '''
+        
+        drugbank_id = ''
+        print(searchterm)
+        if searchterm:
+            if table == 'Name':
+                drugbank_id = (session.query(Name.drugbank_id)
+                            .filter(Name.name.ilike(searchterm))
+                            .all())
+            elif table == 'Synonym':
+                drugbank_id = (session.query(Synonym.drugbank_id)
+                            .filter(Synonym.synonym.ilike(searchterm))
+                            .all())
+            elif table == 'Product':
+                drugbank_id = (session.query(Product.drugbank_id)
+                            .filter(Product.product.ilike(searchterm))
+                            .all())
+
+        # If product contains multiple ingredients:
+        for i in drugbank_id:
+            print('---\ndrugbank_id:', i[0])
+            name = (session.query(Name.name)
+                    .filter(Name.drugbank_id == i[0]).all()[0][0])
+            d_class = (session.query(Pharm.d_class)
+                    .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+            ind = (session.query(Pharm.ind)
+                .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+            pd = (session.query(Pharm.pd)
+                .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+            mech = (session.query(Pharm.mech)
+                    .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+            # Synonyms and products are lists
+            synonyms = (session.query(Synonym.synonym)
+                        .filter(Synonym.drugbank_id == i[0]).all())
+            products = (session.query(Product.product)
+                        .filter(Product.drugbank_id == i[0]).all())
+            
+        #return drugbank_id, name, d_class, ind, pd, mech, synonyms, products, suggestions
+        return dict(drugbank_id=drugbank_id, 
+                    name=name, d_class=d_class, ind=ind, pd=pd, mech=mech, synonyms=synonyms, products=products)
+
+    def get_results(self, searchterm):
+        matched_name, table, suggestions = self.get_drugname(searchterm, self.pattern_values, self.patterns)
+        print('matched_name:', matched_name)
+        results = self.query(matched_name, table, self.session)
+        results['suggestions'] = suggestions
+        self.session.close()
+        return results
+
+
+
 def userinput():
     '''Get user input'''
     userinput = input('Search:').lower().strip()
     return userinput
-
 
 def get_results(searchterm, patterns_values, patterns, session):
     # ?rewrite as class
@@ -105,6 +224,10 @@ def get_results(searchterm, patterns_values, patterns, session):
 
     def query(searchterm, table, session):
         '''Finds the drugbank ID and uses it to look up all associated data.
+        Args
+            searchterm - matched drug name
+            table - table containing matched name (Name, Synonym, or Product)
+            session - DB session
         Returns
             dict containing all associated data for matched drug
 
@@ -163,12 +286,14 @@ def stringify(obj):
 
 
 if __name__ == '__main__':
+    # Connect to db and get patterns to match against on startup
     session = db_session()
-    patterns_values, patterns = patterns(session)
     searchterm = userinput()
-    results = get_results(searchterm, patterns_values, patterns, session)
-
-
+    pattern_values, patterns = get_patterns(session)
+    #results = get_results(searchterm, patterns_values, patterns, session)
+    query = Query(context='cli')
+    results = query.get_results(searchterm)
+    
     print('Name:', results['name'], '\n')
     print('Class:', results['d_class'], '\n')
     print('Indication:', drop_tags(results['ind']), '\n')
@@ -183,7 +308,6 @@ if __name__ == '__main__':
         # This is a very long list
         #print(product[0], end = ', ')
         pass
-    
-    session.close()
+
     
     
