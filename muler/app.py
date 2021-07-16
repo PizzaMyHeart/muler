@@ -6,11 +6,11 @@ import markdown
 import muler.query as query
 
 session = query.db_session()
-patterns_values, patterns = query.patterns(session)
+pattern_values, patterns = query.get_patterns(session)
 
 def search(searchterm):
-
-    results = query.get_results(searchterm, patterns_values, patterns, session)
+    results = query.Query(session, pattern_values, patterns).get_results(searchterm)
+    #results = query.get_results(searchterm, patterns_values, patterns, session)
     lambda x: markdown.markdown([results[x] for x in ['ind', 'pd', 'mech']])
     session.close()
     return render_template('result.html',
@@ -26,13 +26,14 @@ def search(searchterm):
                            suggestions=results['suggestions'])
 
 
+
 def get_userinput():
     userinput = request.form['search'].lower().strip()
     return userinput
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    
+
     @app.route('/about')
     def about():
       return render_template('about.html')

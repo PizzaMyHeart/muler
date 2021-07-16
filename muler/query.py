@@ -39,8 +39,7 @@ def get_patterns(session):
     return patterns_values, patterns
 
 class Query():
-    def __init__(self, context):
-        self.context = context
+    def __init__(self, session, pattern_values, patterns):
         # Session and patterns need to be initialised outside of the class before 
         # calling get_results()
         self.session = session
@@ -291,7 +290,7 @@ if __name__ == '__main__':
     searchterm = userinput()
     pattern_values, patterns = get_patterns(session)
     #results = get_results(searchterm, patterns_values, patterns, session)
-    query = Query(context='cli')
+    query = Query(session, pattern_values, patterns)
     results = query.get_results(searchterm)
     
     print('Name:', results['name'], '\n')
