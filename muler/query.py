@@ -38,17 +38,17 @@ def get_patterns(session):
     patterns_values = [i.lower() for i in patterns_values]
     return patterns_values, patterns
 
+def get_userinput():
+    '''Get user input'''
+    userinput = input('Search:').lower().strip()
+    return userinput
+
 class Query():
     def __init__(self, session, pattern_values, patterns):
         # Session and patterns need to be initialised outside of the class before 
         # calling get_results()
         self.session = session
         self.pattern_values, self.patterns = pattern_values, patterns
-
-    def userinput(self):
-        '''Get user input'''
-        userinput = input('Search:').lower().strip()
-        return userinput
 
     def get_drugname(self, searchterm, patterns_values, patterns):
         '''Compares search term with drug names (generic, synonym, or product) 
@@ -57,13 +57,15 @@ class Query():
         Args
             searchterm - user input
             patterns_values - flat list of names, synonyms and products
+            patterns - dict of patterns_values
 
         Returns
-            searchterm - matched name in table (may not be original user input)
+            matched_name - matched name in table (may not be original user input)
             table - table containing the matched name (determine whether input is Name,
                     Synonym, or Product)
             suggestions - a list of similar matches 
         '''
+        print('searchterm:', searchterm)
         table = ''
         suggestions = None
         if searchterm not in patterns_values:
@@ -74,8 +76,8 @@ class Query():
                 #print(pattern.lower(), searchterm.lower(), similarity)
                 similarities.update({value.lower(): similarity})
             matched_name =  max(similarities, key = similarities.get)
-            max_value = max(similarities.values())
-            print('Similarity:', max_value)
+            max_similarity = max(similarities.values())
+            print('Similarity:', max_similarity)
             # Provide a few similar patterns at intervals from max
             suggestions = sorted(similarities,
                                     key = similarities.get, reverse = True)[:10:2]
@@ -156,7 +158,7 @@ class Query():
         return results
 
 
-
+"""
 def userinput():
     '''Get user input'''
     userinput = input('Search:').lower().strip()
@@ -273,6 +275,7 @@ def get_results(searchterm, patterns_values, patterns, session):
     searchterm, table, suggestions = get_drugname(searchterm, patterns_values, patterns)
     results = query(searchterm, table, session)
     return results
+"""
 
 def stringify(obj):
     '''Turn synonym and product objects into strings'''
@@ -287,7 +290,7 @@ def stringify(obj):
 if __name__ == '__main__':
     # Connect to db and get patterns to match against on startup
     session = db_session()
-    searchterm = userinput()
+    searchterm = get_userinput()
     pattern_values, patterns = get_patterns(session)
     #results = get_results(searchterm, patterns_values, patterns, session)
     query = Query(session, pattern_values, patterns)

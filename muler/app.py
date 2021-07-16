@@ -12,7 +12,7 @@ def search(searchterm):
     results = query.Query(session, pattern_values, patterns).get_results(searchterm)
     #results = query.get_results(searchterm, patterns_values, patterns, session)
     lambda x: markdown.markdown([results[x] for x in ['ind', 'pd', 'mech']])
-    session.close()
+    #session.close()
     return render_template('result.html',
                            results=results,
                            drugbank_id=results['drugbank_id'],
