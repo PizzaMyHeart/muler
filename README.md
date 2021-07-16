@@ -65,6 +65,8 @@ TODO
     - Remove trailing whitespace [DONE]
   - CSS
     - Remove borders on searchbar focus on mobile
+  - SQLalchemy
+    - Switch to ```scoped_session```
 
 - Update rofecoxib and mephenytoin mechanism of action [DONE]
 - Approved/withdrawn/investigational (Groups)
