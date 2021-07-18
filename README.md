@@ -83,3 +83,6 @@ TODO
 ### 2021-07-16
 - Input sanitisation and minor optimisations for faster response time (not formally measured)
 - Rewrote functions to search database using user input with class methods
+
+### 2021-07-18
+- Added exception handling to roll back invalid database transactions
