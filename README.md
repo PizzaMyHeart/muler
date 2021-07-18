@@ -70,6 +70,9 @@ TODO
   - SQLalchemy
     - Switch to ```scoped_session```
 
+- CLI app
+  - Implement CLI version using Click instead of gazillions of ```print``` statements
+
 - Update rofecoxib and mephenytoin mechanism of action [DONE]
 - Approved/withdrawn/investigational (Groups)
 
