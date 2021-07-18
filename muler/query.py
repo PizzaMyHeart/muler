@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exc
 from sqlalchemy.orm import sessionmaker
 from fuzzywuzzy import fuzz
 from muler.models import Pharm, Name, Synonym, Product
@@ -8,7 +8,7 @@ from muler.database.regex import drop_tags
 import muler.config as config
 
 def db_session():
-
+    '''Establish a connection to the database'''
     db_url = config.db_config['local_mysql_db'] # Change this when deploying
     # Set pool_recycle to < 300 to avoid disconnection errors.
     # See https://help.pythonanywhere.com/pages/UsingSQLAlchemywithMySQL
@@ -52,12 +52,12 @@ class Query():
 
     def get_drugname(self, searchterm, patterns_values, patterns):
         '''Compares search term with drug names (generic, synonym, or product) 
-            in DB and returns best match.
+            in the database and returns best match.
 
         Args
             searchterm - user input
             patterns_values - flat list of names, synonyms and products
-            patterns - dict of patterns_values
+            patterns - dict of patterns_values 
 
         Returns
             matched_name - matched name in table (may not be original user input)
@@ -113,43 +113,59 @@ class Query():
         drugbank_id = ''
         print(searchterm)
         if searchterm:
-            if table == 'Name':
-                drugbank_id = (session.query(Name.drugbank_id)
-                            .filter(Name.name.ilike(searchterm))
-                            .all())
-            elif table == 'Synonym':
-                drugbank_id = (session.query(Synonym.drugbank_id)
-                            .filter(Synonym.synonym.ilike(searchterm))
-                            .all())
-            elif table == 'Product':
-                drugbank_id = (session.query(Product.drugbank_id)
-                            .filter(Product.product.ilike(searchterm))
-                            .all())
+            # Attempt to query the db
+            for i in range(0, 10):
+                try:
+                    if table == 'Name':
+                        drugbank_id = (session.query(Name.drugbank_id)
+                                    .filter(Name.name.ilike(searchterm))
+                                    .all())
+                    elif table == 'Synonym':
+                        drugbank_id = (session.query(Synonym.drugbank_id)
+                                    .filter(Synonym.synonym.ilike(searchterm))
+                                    .all())
+                    elif table == 'Product':
+                        drugbank_id = (session.query(Product.drugbank_id)
+                                    .filter(Product.product.ilike(searchterm))
+                                    .all())
 
-        # If product contains multiple ingredients:
-        for i in drugbank_id:
-            print('---\ndrugbank_id:', i[0])
-            name = (session.query(Name.name)
-                    .filter(Name.drugbank_id == i[0]).all()[0][0])
-            d_class = (session.query(Pharm.d_class)
-                    .filter(Pharm.drugbank_id == i[0]).all()[0][0])
-            ind = (session.query(Pharm.ind)
-                .filter(Pharm.drugbank_id == i[0]).all()[0][0])
-            pd = (session.query(Pharm.pd)
-                .filter(Pharm.drugbank_id == i[0]).all()[0][0])
-            mech = (session.query(Pharm.mech)
-                    .filter(Pharm.drugbank_id == i[0]).all()[0][0])
-            # Synonyms and products are lists
-            synonyms = (session.query(Synonym.synonym)
-                        .filter(Synonym.drugbank_id == i[0]).all())
-            products = (session.query(Product.product)
-                        .filter(Product.drugbank_id == i[0]).all())
+                    # If product contains multiple ingredients:
+                    for i in drugbank_id:
+                        print('---\ndrugbank_id:', i[0])
+                        name = (session.query(Name.name)
+                                .filter(Name.drugbank_id == i[0]).all()[0][0])
+                        d_class = (session.query(Pharm.d_class)
+                                .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+                        ind = (session.query(Pharm.ind)
+                            .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+                        pd = (session.query(Pharm.pd)
+                            .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+                        mech = (session.query(Pharm.mech)
+                                .filter(Pharm.drugbank_id == i[0]).all()[0][0])
+                        # Synonyms and products are lists
+                        synonyms = (session.query(Synonym.synonym)
+                                    .filter(Synonym.drugbank_id == i[0]).all())
+                        products = (session.query(Product.product)
+                                    .filter(Product.drugbank_id == i[0]).all())
+                except exc.InvalidRequestError:
+                    session.rollback()
+                    continue
+                break
             
         #return drugbank_id, name, d_class, ind, pd, mech, synonyms, products, suggestions
         return dict(drugbank_id=drugbank_id, 
                     name=name, d_class=d_class, ind=ind, pd=pd, mech=mech, synonyms=synonyms, products=products)
 
     def get_results(self, searchterm):
+        '''Returns drug name with all associated data given a search input. 
+        This function combines get_drugname and query.
+
+        Args
+            searchterm - user input
+        
+        Returns
+            results - dict containing drug data
+        '''
         matched_name, table, suggestions = self.get_drugname(searchterm, self.pattern_values, self.patterns)
         print('matched_name:', matched_name)
         results = self.query(matched_name, table, self.session)
