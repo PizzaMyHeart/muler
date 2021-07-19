@@ -1,200 +1,332 @@
-body {
-	font-family: "Verdana";
-	background-color: #FDFDFD;
+/* Night mode #3 - Add Dark/Light Mode */
+:root {
+    --primary-color: #7d7d7d;
+    --secondary-color: #536390;
+    --font-color: #424242;
+    --bg-color: #FDFDFD;
+    --search-color: #dedede;
+    --heading-color: #292922;
+    --accbg-color: #eee;
+    --link-blue: blue;
+}
+/* Night mode #3 - Add Dark/Light Mode */
+[data-theme="dark"] {
+    --primary-color: #9a97f3;
+    /*  color: var(--primary-color); */
+    --secondary-color: #818cab;
+    /*  color: var(--secondary-color); */
+    --font-color: #e1e1ff;
+    /*  color: var(--font-color); */
+    --bg-color: #161625;
+    /*  background-color: var(--bg-color); */
+    --search-color: #fff;
+    --heading-color: #818cab;
+    /*  color: var(--heading-color); */
+    --accbg-color: #3a3955;
+    --link-blue: #fff;
 }
 
-body a {
-	color: grey;
+body {
+    font-family: "Verdana";
+    color: var(--font-color);
+    /* Night mode #3 - Add Dark/Light Mode */
+    background-color: var(--bg-color);
+    /* Night mode #3 - Add Dark/Light Mode */
+	  margin-bottom:5vh;
+}
+
+/* Night mode #3 - Add Dark/Light Mode */
+body a,
+body a:link,
+body a:visited {
+    /* 	color: grey; */
+    color: var(--link-blue);
+}
+/* Night mode #3 - Add Dark/Light Mode */
+body a:hover,
+body a:active {
+    color: var(--secondary-color);
 }
 
 .wrapper {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .content {
-	flex: 1;
+    flex: 1;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	font-family: "Roboto", sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Roboto", sans-serif;
 }
 
 nav {
-	padding: 0 1.5em;
+    padding: 0 1.5em;
 }
 
 nav ul {
-	display: flex;
-	flex-direction: row;
-	padding: 0
+    display: flex;
+    flex-direction: row;
+    padding: 0;
 }
 
 nav ul li {
-	margin: 0 5px;
-	list-style: none;
-	flex-basis: 5%;
+    margin: 0 5px;
+    list-style: none;
+    flex-basis: 5%;
 }
 
-li a {
-	display: block;
-	text-decoration: none;
-	font-size: 1.25em;
-	font-family: "Roboto", sans-serif;
-	color: grey;
+li a,
+li a:link,
+li a:visited {
+    display: block;
+    text-decoration: none;
+    font-size: 1.25em;
+    font-family: "Roboto", sans-serif;
+    /* 	color: grey; */
+    /* Night mode #3 - Add Dark/Light Mode */
+    color: var(--font-color);
+    /* Night mode #3 - Add Dark/Light Mode */
 }
-
-
 
 /* Push flex item to right */
 .push {
-	margin-left: auto
+    margin-left: auto;
 }
 
 #searchbar {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	height: 50%;
-	width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 50%;
+    width: 100%;
 }
 
 #searchbar > input {
-	background-color: white;
+    background-color: white;
 }
 
 
 #searchfield {
-	flex-basis: 100%;
-	font-size: 20px;
-	font-family: "Arial";
-	border-style: solid none solid solid;
-	border-radius: 60px 0 0 60px;
-	margin-left: 1em;
-	padding-left: 1em
+    flex-basis: 100%;
+    font-size: 20px;
+    font-family: "Arial";
+    border-style: solid none solid solid;
+    border-radius: 60px 0 0 60px;
+    margin-left: 1em;
+    padding-left: 1em;
 }
 
 #searchfield:focus {
-	outline: none;
+    outline: none;
 }
 
 #searchbtn {
-	font-size: 2em;
-	border-style: solid solid solid none;
-	border-radius: 0 60px 60px 0;
-	margin-right: 1em;
+    font-size: 2em;
+    border-style: solid solid solid none;
+    border-radius: 0 60px 60px 0;
+    margin-right: 1em;
 }
 
+/* Night mode #3 - Add Dark/Light Mode */
 #searchbtn:hover {
-	background-color: #DEDEDE;
+    /* 	background-color: #DEDEDE; */
+    background-color: var(--search-color);
 }
 
 #searchbtn:focus {
-	outline: none;
+    outline: none;
 }
 
 #searchmicrocopy {
-	margin: -0.5em 1.5em 0 1.5em;
+    margin: -0.5em 1.5em 0 1.5em;
 }
 
+/* Night mode #3 - Add Dark/Light Mode */
 #searchmicrocopy p {
-	color: grey;
+    /* 	color: grey; */
+    color: var(--primary-color);
 }
 
 mark {
-	padding: 0.3em 0.3em 0.3em 1em;
+    padding: 0.3em 0.3em 0.3em 1em;
 }
 
-.heading {
+/* use or remove this empty class */
+/* .heading {
 	background-color: ;
-}
+} */
 
 .drugname {
-	font-size: 2em;
+    font-size: 2em;
 }
 
 .label {
-	margin-top: 1.5em;
+    margin-top: 1.5em;
 }
 
+/* Night mode #3 - Add Dark/Light Mode */
 .accordion {
-	margin: 1.5em 0;
-	background-color: #eee;
-  	color: #444;
-  	padding: 1em;
-  	border: none;
-  	border-radius: 20px;
+    margin: 1.5em 0;
+    /* 	background-color: #eee; */
+    background-color: var(--accbg-color);
+    /*   	color: #444; */
+    color: var(--font-color);
+    padding: 1em;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
 }
 
 .accordion:focus {
-	outline: none;
+    outline: none;
 }
 
+/* Night mode #3 - Add Dark/Light Mode */
 /* .active when clicked on, hover on mouse*/
-.active, .accordion:hover {
-  background-color: #ccc;
+.active,
+.accordion:hover{
+    /*   background-color: #ccc; */
+    background-color: var(--primary-color);
+    color: var(--accbg-color);
 }
 
 .panel {
-	display: none;
+    display: none;
 }
 
 .container {
-	padding: 1.5em 1.5em 0 1.5em;
+    padding: 1.5em 1.5em 0 1.5em;
 }
 
 .cards {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: : 2em;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
 }
 
 .card {
-	width: 20em;
-	border-style: none;
-	display: inline;
-	margin: 2em auto 0 auto;
+    width: 20em;
+    /* width can't be used with display;inline;*/
+    border-style: none;
+    display: inline;
+    margin: 2em auto 0 auto;
+    /* margin can't be used with display;inline;*/
 }
-
 /* Outbound links */
 .outbound {
-	color: blue;
+    /* 	color: blue; */
+    color: var(--link-blue);
 }
 
 .center {
-	text-align: center
+    text-align: center
 }
-
 .icon {
-	font-size: 2em;
+    font-size: 2em;
 }
-
 footer {
-	display: flex;
-	flex-direction: row;
-	font-size: 0.75em;
+    display: flex;
+    flex-direction: row;
+    font-size: 0.75em;
 }
-
-footer a {
-	color: grey;
+/* Night mode #3 - Add Dark/Light Mode */
+footer a,
+footer a:link,
+footer a:visited {
+    /* 	color: grey; */
+    color: var(--primary-color);
 }
-
-
 .footer-elem {
-	font-size: 1.25em;
-	margin-left: 1.5em;
+    font-size: 1.25em;
+    margin-left: 1.5em;
 }
-
+/* Night mode #3 - Add Dark/Light Mode */
 /* Terms of use with licensing info*/
 #terms {
-	font-size: 0.75em;
-	color: grey;
+    font-size: 0.75em;
+    /* 	color: grey; */
+    color: var(--primary-color);
+}
+@media only screen and (min-width: 769px) {
+    #searchfield {
+        flex-basis: 50%;
+    }
+    #searchmicrocopy {
+        text-align: center;
+    }
+    .cards {
+        flex-direction: row;
+    }
+    body {
+        padding: 0 4em;
+    }
 }
 
-@media only screen and (min-width: 769px) {
-	#searchfield {flex-basis: 50%}
-	#searchmicrocopy {text-align: center;}
-	.cards {flex-direction: row}
-	body {padding: 0 4em;}
+
+/* Night mode #3 - Add Dark/Light Mode */
+.switch {
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    bottom: 4.4vh;
+    right: 20px;
+}
+/*slider switch css */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+}
+.theme-switch-wrapper em {
+    margin-right: 10px;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+.theme-switch-wrapper .theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+.theme-switch-wrapper .theme-switch input {
+    display: none;
+}
+.theme-switch .slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.4s;
+}
+.theme-switch .slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: 0.4s;
+    width: 26px;
+}
+.theme-switch input:checked + .slider {
+    background-color: #66bb6a;
+}
+.theme-switch input:checked + .slider:before {
+    transform: translateX(26px);
+}
+.theme-switch .slider.round {
+    border-radius: 34px;
+}
+.theme-switch .slider.round:before {
+    border-radius: 50%;
 }
