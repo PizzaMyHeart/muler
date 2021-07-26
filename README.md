@@ -89,3 +89,6 @@ TODO
 
 ### 2021-07-18
 - Added exception handling to roll back invalid database transactions
+
+### 2021-07-26
+- Added dark mode 😎 (many thanks to [calvinmorett](https://github.com/calvinmorett))
