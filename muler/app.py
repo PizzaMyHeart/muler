@@ -12,6 +12,7 @@ def search(searchterm):
     results = query.Query(session, pattern_values, patterns).get_results(searchterm)
     #results = query.get_results(searchterm, patterns_values, patterns, session)
     lambda x: markdown.markdown([results[x] for x in ['ind', 'pd', 'mech']])
+    session.rollback()
     #session.close()
     return render_template('result.html',
                            results=results,
@@ -48,7 +49,7 @@ def create_app(test_config=None):
         '''
         if request.method == 'POST':    # Searching while on a result page
             return redirect(url_for('link', link=get_userinput()))
-
+        
         return search(link.lower())
     
     @app.route('/', methods=['GET', 'POST'])
