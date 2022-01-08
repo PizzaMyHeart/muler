@@ -43,19 +43,20 @@ def create_app(test_config=None):
     def legal():
       return render_template('legal.html')
 
-    @app.route('/<link>', methods=['GET', 'POST'])
-    def link(link):
+    # /search route for queries to avoid querying database with bot-entered strings
+    @app.route('/search/<query>', methods=['GET', 'POST'])  
+    def link(query):
         '''Queries the database via search() using the url slug 
         '''
         if request.method == 'POST':    # Searching while on a result page
-            return redirect(url_for('link', link=get_userinput()))
+            return redirect(url_for('link', query=get_userinput()))
         
-        return search(link.lower())
+        return search(query.lower())
     
     @app.route('/', methods=['GET', 'POST'])
     def index():
         if request.method == 'POST':
-            return redirect(url_for('link', link=get_userinput()))        
+            return redirect(url_for('link', query=get_userinput()))        
         elif request.method == 'GET':    
             return render_template('index.html')
     
