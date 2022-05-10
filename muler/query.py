@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from sqlalchemy import create_engine, exc
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from fuzzywuzzy import fuzz
 from muler.models import Pharm, Name, Synonym, Product
 from muler.database.regex import drop_tags
@@ -13,8 +13,11 @@ def db_session():
     # Set pool_recycle to < 300 to avoid disconnection errors.
     # See https://help.pythonanywhere.com/pages/UsingSQLAlchemywithMySQL
     engine = create_engine(db_url, echo=False, pool_recycle=280, connect_args={'connect_timeout': 1000}, pool_pre_ping=True)
+    '''
     Session = sessionmaker(bind=engine)
     session = Session()
+    '''
+    session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
     return session
 
 def get_patterns(session):
@@ -165,11 +168,13 @@ class Query():
         
         Returns
             results - dict containing drug data
-        '''
+        '''        
+        
         matched_name, table, suggestions = self.get_drugname(searchterm, self.pattern_values, self.patterns)
         print('matched_name:', matched_name)
         results = self.query(matched_name, table, self.session)
         results['suggestions'] = suggestions
+        
         self.session.close()
         return results
 

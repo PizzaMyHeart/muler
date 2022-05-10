@@ -12,7 +12,6 @@ def search(searchterm):
     results = query.Query(session, pattern_values, patterns).get_results(searchterm)
     #results = query.get_results(searchterm, patterns_values, patterns, session)
     lambda x: markdown.markdown([results[x] for x in ['ind', 'pd', 'mech']])
-    session.rollback()
     #session.close()
     return render_template('result.html',
                            results=results,
@@ -34,6 +33,7 @@ def get_userinput():
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+    
 
     @app.route('/about')
     def about():
@@ -59,5 +59,10 @@ def create_app(test_config=None):
             return redirect(url_for('link', query=get_userinput()))        
         elif request.method == 'GET':    
             return render_template('index.html')
+    '''
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        session.remove()
+    '''
     
     return app
