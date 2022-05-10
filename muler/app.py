@@ -59,10 +59,10 @@ def create_app(test_config=None):
             return redirect(url_for('link', query=get_userinput()))        
         elif request.method == 'GET':    
             return render_template('index.html')
-    '''
+    
     @app.teardown_appcontext
     def shutdown_session(exception=None):
         session.remove()
-    '''
+    
     
     return app
