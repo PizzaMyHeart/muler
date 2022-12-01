@@ -9,7 +9,7 @@
       <p>Showing results for '{{ suggestions[0] }}'.</p>
       <p>Did you mean: </p>
         {% for i in suggestions[1:] %}
-          <a href='/{{ i }}'>{{ i }}</a>
+          <a href='/search/{{ i }}'>{{ i }}</a>
         {% endfor %}
     {% endif %}
 
